@@ -1,8 +1,12 @@
-import { log } from 'console';
+import morgan from 'morgan';
 import express from 'express'
 
 const app = express();
 app.use(express.json())
+morgan.token('body', function(req, res) {
+return JSON.stringify(req.body);
+});
+app.use(morgan(':method :status :res[content-length] -:response-time ms :body'))
 let persons = 
     [
         { 
