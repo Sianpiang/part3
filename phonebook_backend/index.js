@@ -5,6 +5,7 @@ import cors from 'cors'
 const app = express();
 app.use(express.json())
 app.use(cors())
+app.use(express.static('build'))
 morgan.token('body', function(req, res) {
 return JSON.stringify(req.body);
 });
@@ -38,7 +39,7 @@ const generateId = ()=>{
 }
 
 app.get('/',(req,res)=>{
-    res.send('<h2>Welcome</h2>')
+    res.send('<h2>Welcome Everyone</h2>')
 })
 
 app.get('/api/persons',(req,res)=>{
