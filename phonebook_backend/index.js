@@ -92,9 +92,9 @@ const errorHandler = (error,req,res,next)=>{
 
 app.use(errorHandler);
 
-const URL = process.env.MONGO_URI;
+
 const PORT = process.env.PORT || 6001;
-mongoose.connect(URL)
+mongoose.connect( process.env.MONGO_URI)
 .then(()=>{
     app.listen(PORT,()=>{
         console.log(`Server connected to ${PORT}`);
