@@ -56,11 +56,8 @@ app.delete('/api/persons/:id',(req,res,next)=>{
     })
 })
 
-app.post('/api/persons',(req,res)=>{
+app.post('/api/persons',(req,res,next)=>{
     const body = req.body;
-    if(body.name===null || body.number===null){
-        return res.status(400).json({error:"Incomplete details"})
-    }
     const newPerson = new Person({
         name:body.name,
         number:body.number,
@@ -68,6 +65,7 @@ app.post('/api/persons',(req,res)=>{
     newPerson.save().then(savedPerson=>{
         res.json(savedPerson)
     })
+    .catch(error=>next(error))
 })
 
 app.put('/api/persons/:name',(req,res,next)=>{
@@ -84,9 +82,12 @@ const unknownEndpoint=(req,res)=>{
 }
 app.use(unknownEndpoint)
 const errorHandler = (error,req,res,next)=>{
-    console.log(error.message);
+    console.log(error.name);
     if(error.name==='CastError'){
         return res.status(400).send({error:'malformated id'})
+    }
+    if(error.name==='ValidationError'){
+        return res.status(400).send({error:error.message})
     }
 }
 
